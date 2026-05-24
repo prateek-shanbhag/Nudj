@@ -11,7 +11,6 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.tpc.nudj.navigation.ScreenRoute
 import com.tpc.nudj.ui.DemoScreen
-import com.tpc.nudj.ui.DemoScreen2
 import com.tpc.nudj.ui.theme.NudjTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,11 +24,7 @@ class MainActivity : ComponentActivity() {
                     backStack = backStack,
                     entryProvider = entryProvider {
                         entry<ScreenRoute.App.DemoScreen> {
-                            DemoScreen(
-                                navigateToDemo2 = {
-                                    backStack.add(ScreenRoute.App.DemoScreen2)
-                                }
-                            )
+                            DemoScreen()
                         }
                     }
                 )
