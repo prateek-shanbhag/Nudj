@@ -1,4 +1,4 @@
-package com.tpc.nudj.ui.components
+package com.tpc.nudj.ui.components.mock
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
@@ -47,7 +48,7 @@ fun MockTextField(
         readOnly = readOnly,
         leadingIcon = leadingIcon,
         placeholder = placeholder,
-        textStyle = androidx.compose.ui.text.TextStyle(fontSize = 20.sp),
+        textStyle = TextStyle(fontSize = 20.sp),
         trailingIcon = trailingIcon,
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color(0xFFFF5E00),

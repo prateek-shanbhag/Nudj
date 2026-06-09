@@ -8,7 +8,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import com.tpc.nudj.ui.navigation.ScreenRoute
-import com.tpc.nudj.ui.DemoScreen
+import com.tpc.nudj.ui.screen.DemoScreen
 import com.tpc.nudj.ui.theme.NudjTheme
 
 class MainActivity : ComponentActivity() {

@@ -1,4 +1,4 @@
-package com.tpc.nudj.ui
+package com.tpc.nudj.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border

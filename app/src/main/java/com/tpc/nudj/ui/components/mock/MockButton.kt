@@ -1,4 +1,4 @@
-package com.tpc.nudj.ui.components
+package com.tpc.nudj.ui.components.mock
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.isSystemInDarkTheme
