@@ -8,7 +8,6 @@ plugins {
     //ksp
     alias(libs.plugins.ksp)
 }
-
 android {
     compileSdk = 37
     namespace = "com.tpc.nudj"
@@ -48,6 +47,7 @@ android {
     buildFeatures {
         compose = true
     }
+    compileSdkMinor = 0
 }
 
 dependencies {
@@ -61,6 +61,9 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.compose.ui.text)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.compose.foundation)
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
