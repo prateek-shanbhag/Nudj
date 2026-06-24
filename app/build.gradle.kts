@@ -60,7 +60,6 @@ android {
         compose = true
         resValues = true
     }
-    compileSdkMinor = 0
 }
 
 dependencies {
@@ -74,9 +73,6 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.compose.ui.text)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.compose.foundation)
     implementation(libs.firebase.auth)
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
