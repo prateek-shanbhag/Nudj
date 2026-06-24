@@ -62,19 +62,15 @@ fun EmailVerificationScreenLayout(
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
 
-    val minutes = (uiState.timerInSeconds / 60).toString().padStart(2, '0')
-    val seconds = (uiState.timerInSeconds % 60).toString().padStart(2, '0')
-    val formattedTime = "$minutes:$seconds"
-
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackBarHostState)
-        }
+        },
+        containerColor = LocalAppColors.current.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = LocalAppColors.current.background)
                 .padding(paddingValues)
                 .padding(horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -90,7 +86,7 @@ fun EmailVerificationScreenLayout(
             Spacer(modifier = Modifier.height(40.dp))
 
             Text(
-                text = formattedTime,
+                text = uiState.formattedTime,
                 style = MaterialTheme.typography.displayMedium,
                 color = LocalAppColors.current.primaryButtonColor
             )
