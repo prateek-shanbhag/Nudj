@@ -4,31 +4,23 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,18 +31,20 @@ import com.tpc.nudj.ui.components.EmailTextField
 import com.tpc.nudj.ui.components.LoadingIndicator
 import com.tpc.nudj.ui.components.PasswordTextField
 import com.tpc.nudj.ui.components.PrimaryButton
+import com.tpc.nudj.ui.components.SecondaryButton
+import com.tpc.nudj.ui.components.TertiaryButton
+import com.tpc.nudj.ui.theme.LocalAppColor
 import com.tpc.nudj.ui.theme.NudjTheme
 import com.tpc.nudj.viewmodels.auth.register.RegisterViewModel
 
-val FigmaBg = Color(0xFFEBF1F5)
-val FigmaDarkBlue = Color(0xFF0A3752)
-val FigmaContainerGrey = Color(0xFFA2B5C6)
-val FigmaLinkBlue = Color(0xFF4A90E2)
+
+enum class Role {
+    USER, ADMIN
+}
 
 @Composable
 fun RegisterScreen(
     viewmodel: RegisterViewModel = hiltViewModel(),
-    onNavigateBack: () -> Unit,
     onNavigateToLogin: () -> Unit,
 ) {
     val uiState by viewmodel.registerUiState.collectAsStateWithLifecycle()
@@ -67,9 +61,9 @@ fun RegisterScreen(
             isConfirmPasswordVisible = uiState.isConfirmPasswordVisible,
             onPasswordVisibilityToggle = { viewmodel.onPasswordVisibilityToggle() },
             onConfirmPasswordVisibilityToggle = { viewmodel.onConfirmPasswordVisibilityToggle() },
+            onRoleSelected = { role -> viewmodel.onRoleChange(role) }, 
             onSignUpClick = viewmodel::onRegisterClick,
             onGoogleClick = viewmodel::onGoogleClick,
-            onBackClick = onNavigateBack,
             onLoginClick = onNavigateToLogin
         )
     }
@@ -83,20 +77,23 @@ fun RegisterScreenLayout(
     onConfirmPasswordInput: (String) -> Unit,
     onPasswordVisibilityToggle: () -> Unit,
     onConfirmPasswordVisibilityToggle: () -> Unit,
-    isPasswordVisible : Boolean,
+    isPasswordVisible: Boolean,
     isConfirmPasswordVisible: Boolean,
+    onRoleSelected: (Role) -> Unit,
     onSignUpClick: () -> Unit,
     onGoogleClick: () -> Unit,
-    onBackClick: () -> Unit,
-    onLoginClick: () -> Unit // THIS WAS ADDED
+    onLoginClick: () -> Unit
 ) {
+    val appColors = LocalAppColor.current
+    val dividerAndTextColor = if (isSystemInDarkTheme()) Color.White else Color.Black
 
-    var isStudentSelected by remember { mutableStateOf(true) }
+    
+    val currentRole = uiState.role 
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(FigmaBg)
+            .background(appColors.backgroundColor) 
             .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -124,70 +121,51 @@ fun RegisterScreenLayout(
                 .fillMaxWidth()
                 .height(44.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .background(
-                        color = if (isStudentSelected) FigmaDarkBlue else Color.White,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .border(
-                        border = BorderStroke(1.dp, if (isStudentSelected) FigmaDarkBlue else Color.LightGray),
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .clickable { isStudentSelected = true },
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
+            if (currentRole == Role.USER) {
+                PrimaryButton(
                     text = "Student",
-                    color = if (isStudentSelected) Color.White else FigmaDarkBlue,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp
+                    onClick = { onRoleSelected(Role.USER) },
+                    modifier = Modifier.weight(1f).fillMaxHeight()
+                )
+            } else {
+                SecondaryButton(
+                    text = "Student",
+                    onClick = { onRoleSelected(Role.USER) },
+                    modifier = Modifier.weight(1f).fillMaxHeight()
                 )
             }
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .background(
-                        color = if (!isStudentSelected) FigmaDarkBlue else Color.White,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .border(
-                        border = BorderStroke(1.dp, if (!isStudentSelected) FigmaDarkBlue else Color.LightGray),
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .clickable { isStudentSelected = false },
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
+            if (currentRole == Role.ADMIN) {
+                PrimaryButton(
                     text = "Admin",
-                    color = if (!isStudentSelected) Color.White else FigmaDarkBlue,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp
+                    onClick = { onRoleSelected(Role.ADMIN) },
+                    modifier = Modifier.weight(1f).fillMaxHeight()
+                )
+            } else {
+                SecondaryButton(
+                    text = "Admin",
+                    onClick = { onRoleSelected(Role.ADMIN) },
+                    modifier = Modifier.weight(1f).fillMaxHeight()
                 )
             }
         }
 
         Spacer(modifier = Modifier.height(28.dp))
 
+      
         Text(
             text = "CREATE ACCOUNT",
-            color = FigmaDarkBlue,
-            fontWeight = FontWeight.Normal,
-            fontSize = 15.sp,
-            letterSpacing = 0.5.sp
+            color = appColors.primaryColor, 
+            style = MaterialTheme.typography.titleMedium
         )
 
         Spacer(modifier = Modifier.height(14.dp))
 
 
         Surface(
-            color = FigmaContainerGrey,
+            color = appColors.surfaceColor,
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -233,20 +211,21 @@ fun RegisterScreenLayout(
 
         Spacer(modifier = Modifier.height(24.dp))
 
+   
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.width(110.dp),
             horizontalArrangement = Arrangement.Center
         ) {
-            HorizontalDivider(modifier = Modifier.weight(1f), color = Color.Gray, thickness = 1.dp)
+            HorizontalDivider(modifier = Modifier.weight(1f), color = dividerAndTextColor, thickness = 1.dp)
             Text(
                 text = "OR",
                 modifier = Modifier.padding(horizontal = 8.dp),
-                color = Color.Black,
+                color = dividerAndTextColor,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp
             )
-            HorizontalDivider(modifier = Modifier.weight(1f), color = Color.Gray, thickness = 1.dp)
+            HorizontalDivider(modifier = Modifier.weight(1f), color = dividerAndTextColor, thickness = 1.dp)
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -269,7 +248,7 @@ fun RegisterScreenLayout(
             Spacer(modifier = Modifier.width(10.dp))
             Text(
                 text = "Continue with google",
-                color = FigmaDarkBlue,
+                color = appColors.primaryColor, 
                 fontWeight = FontWeight.Normal,
                 fontSize = 14.sp
             )
@@ -277,27 +256,21 @@ fun RegisterScreenLayout(
 
         Spacer(modifier = Modifier.weight(0.6f))
 
-        val annotatedText = buildAnnotatedString {
-            append("Already have an account? ")
-            withStyle(
-                style = SpanStyle(
-                    color = FigmaLinkBlue,
-                    textDecoration = TextDecoration.Underline,
-                    fontStyle = FontStyle.Italic
-                )
-            ) {
-                append("Login")
-            }
+   
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(bottom = 24.dp)
+        ) {
+            Text(
+                text = "Already have an account? ",
+                fontSize = 13.sp,
+                color = dividerAndTextColor
+            )
+            TertiaryButton(
+                text = "Login",
+                onClick = onLoginClick
+            )
         }
-
-        Text(
-            text = annotatedText,
-            modifier = Modifier
-                .clickable { onLoginClick() }
-                .padding(bottom = 24.dp),
-            fontSize = 13.sp,
-            color = Color.Black
-        )
     }
 }
 
@@ -315,9 +288,9 @@ fun PreviewRegisterScreen() {
             onConfirmPasswordVisibilityToggle = {},
             isPasswordVisible = false,
             isConfirmPasswordVisible = false,
+            onRoleSelected = {},
             onSignUpClick = {},
             onGoogleClick = {},
-            onBackClick = {},
             onLoginClick = {}
         )
     }
