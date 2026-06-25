@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.tpc.nudj.ui.theme.NudjTheme
 import androidx.compose.material.icons.outlined.Mail
 import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.ui.graphics.Color
 import com.tpc.nudj.ui.theme.LocalAppColors
 
 @Composable
@@ -66,6 +67,14 @@ fun NudjTextField(
                 unfocusedContainerColor = LocalAppColors.current.textFieldColor,
                 focusedBorderColor = LocalAppColors.current.textFieldBorderColor,
                 unfocusedBorderColor = LocalAppColors.current.textFieldBorderColor,
+                focusedTextColor = Color.Black,
+                focusedLeadingIconColor = Color.Black,
+                unfocusedLeadingIconColor = Color.Black,
+                focusedPlaceholderColor = Color(0xFF728C9D),
+                unfocusedPlaceholderColor = Color(0xFF728C9D),
+                unfocusedTrailingIconColor = Color.Black,
+                focusedTrailingIconColor = Color.Black,
+                cursorColor = Color.Black
             )
         )
     }
