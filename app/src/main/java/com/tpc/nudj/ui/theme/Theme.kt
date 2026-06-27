@@ -15,6 +15,7 @@ val LocalAppColors = staticCompositionLocalOf { LightColorScheme }
 data class AppColors(
     // Variables for Pages
     val background: Color,
+    val onBackground: Color,
     val primaryButtonColor: Color,
     val secondaryButtonColor: Color,
     val tertiaryButtonColor: Color,
@@ -28,6 +29,7 @@ data class AppColors(
 )
 private val LightColorScheme = AppColors(
     background = LightThemeBackgroundBlue,
+    onBackground = LightThemeDarkBlue,
     primaryButtonColor = LightThemeDarkBlue,
     secondaryButtonColor = Color.White,
     tertiaryButtonColor = LightThemeSeaBlue,
@@ -42,6 +44,7 @@ private val LightColorScheme = AppColors(
 
 private val DarkColorScheme = AppColors(
     background = DarkThemeBackgroundBlue,
+    onBackground = DarkThemeSecondaryButtonColor,
     primaryButtonColor = DarkThemeDarkBlue,
     secondaryButtonColor = DarkThemeSecondaryButtonColor,
     tertiaryButtonColor = DarkThemeSeaBlue,
