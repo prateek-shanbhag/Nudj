@@ -78,7 +78,7 @@ fun EmailVerificationScreenLayout(
         ) {
 
             Image(
-                painter = painterResource(id = R.drawable.email_varification_logo),
+                painter = painterResource(id = R.drawable.meditating_mascot),
                 contentDescription = "Email Sent Illustration",
                 modifier = Modifier.size(280.dp)
             )

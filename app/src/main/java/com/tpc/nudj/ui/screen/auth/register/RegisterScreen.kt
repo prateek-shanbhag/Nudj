@@ -2,8 +2,6 @@ package com.tpc.nudj.ui.screen.auth.register
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
@@ -30,6 +28,7 @@ import com.tpc.nudj.R
 import com.tpc.nudj.model.enums.Role
 import com.tpc.nudj.ui.components.EmailTextField
 import com.tpc.nudj.ui.components.LoadingIndicator
+import com.tpc.nudj.ui.components.NudjLogo
 import com.tpc.nudj.ui.components.PasswordTextField
 import com.tpc.nudj.ui.components.PrimaryButton
 import com.tpc.nudj.ui.components.SecondaryButton
@@ -64,7 +63,7 @@ fun RegisterScreen(
 }
 
 @Composable
-fun RegisterScreenLayout(
+fun     RegisterScreenLayout(
     uiState: RegisterUiState,
     onEmailInput: (String) -> Unit,
     onPasswordInput: (String) -> Unit,
@@ -76,7 +75,8 @@ fun RegisterScreenLayout(
     onGoogleClick: () -> Unit,
     onLoginClick: () -> Unit
 ) {
-    val dividerAndTextColor = if (isSystemInDarkTheme()) Color.White else Color.Black
+
+    val dividerAndTextColor = LocalAppColors.current.onBackground
     val currentRole = uiState.role
 
     Scaffold(
@@ -90,20 +90,7 @@ fun RegisterScreenLayout(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.weight(0.3f))
-
-            Image(
-                painter = painterResource(id = R.drawable.nudj_logo),
-                contentDescription = "NUDJ Icon",
-                modifier = Modifier.size(76.dp)
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Image(
-                painter = painterResource(id = R.drawable.nudj),
-                contentDescription = "NUDJ Text",
-                modifier = Modifier.height(36.dp)
-            )
+            NudjLogo()
 
             Spacer(modifier = Modifier.height(32.dp))
 
@@ -211,7 +198,7 @@ fun RegisterScreenLayout(
                     .height(46.dp),
                 shape = RoundedCornerShape(8.dp),
                 border = BorderStroke(1.dp, Color.LightGray),
-                colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.White)
+                colors = ButtonDefaults.outlinedButtonColors(containerColor = LocalAppColors.current.secondaryButtonColor)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.google),
